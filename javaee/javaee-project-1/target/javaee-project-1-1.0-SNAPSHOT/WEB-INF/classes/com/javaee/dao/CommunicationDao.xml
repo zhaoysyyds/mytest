@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javaee.dao.CommunicationDao">
+
+    <select id="getComm" resultType="NCommunication">
+        select a.id,a.ciid,a.userid,a.message,a.date,b.name,b.type
+        from communication a,user b
+        where ciid=#{ciid} and a.userid=b.id
+        order by a.id desc
+    </select>
+
+    <delete id="delete_byciid">
+        delete from communication where ciid=#{id}
+    </delete>
+
+    <select id="getkidname" resultType="String">
+        SELECT a.kidname
+        FROM native_class a,USER b
+        WHERE a.`nativeid`=b.`id` AND a.`classid`=#{classid} and a.`nativeid`=#{userid}
+    </select>
+    <insert id="add">
+        insert into communication(ciid,userid,message,date)
+           values(#{ciid},#{userid},#{message},#{date})
+    </insert>
+    <select id="mutiply" resultType="NCommunication">
+        SELECT c.id,c.ciid,c.userid,c.message,c.date,d.name,d.kidname,d.type
+        FROM communication c,(SELECT a.`id`,a.`name`,b.classid,b.kidname,a.`type`  FROM USER a  LEFT JOIN
+        (SELECT * FROM native_class WHERE pass=1) b ON a.`id`=b.`nativeid`
+        WHERE a.pass=1) d
+        <where>
+         c.userid=d.id and c.ciid=#{ciid}
+            <if test="message!=null and message!=''">
+                and c.message like '%${message}%'
+            </if>
+
+            <if test="date!=null">
+                and c.date &gt;= #{date,jdbcType=DATE}
+            </if>
+           <if test="name!=null and name!=''">
+               and ( d.name like '%${name}%' or d.kidname like '%${name}%' )
+           </if>
+        </where>
+        ORDER BY c.id DESC
+    </select>
+</mapper>

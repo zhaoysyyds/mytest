@@ -1,0 +1,44 @@
+body{
+    background-color: white;
+}
+*{
+    margin:0px;
+    border: 0px;
+}
+hr{
+    width: 1200px;
+    display: block;
+    padding: 0;
+    border: 0;
+    height: 0;
+    border-top: 1px solid #eee;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+tr td,th{
+    border-width: 1px;
+    border-style: solid;
+    border-color: #e6e6e6;
+    text-align: center;
+    width: 195px;
+    height: 80px;
+}
+.page{
+    position: relative;
+    font-size: 22px;
+    margin-top: 30px;
+    margin-left: 350px;
+}
+.page a{
+    margin-left: 20px;
+    background-color: lightslategrey;
+    COLOR: white;
+    text-decoration: none;
+    border-radius: 6px;
+}
+.page a:hover{
+    opacity: 0.7;
+}
+.bottom{
+    position: absolute;
+}

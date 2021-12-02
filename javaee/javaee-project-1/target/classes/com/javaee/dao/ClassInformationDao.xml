@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javaee.dao.ClassInformationDao">
+
+    <select id="selectclassinformations" resultType="TCInformation">
+        SELECT a.id,a.classid,a.title,a.message,a.teacherid,a.DATE,b.name
+        FROM class_information a,USER b
+        WHERE classid=#{classid} AND a.teacherid=b.id
+        order by a.id desc
+    </select>
+
+    <delete id="delete_byciid">
+        delete from class_information where id=#{ciid}
+    </delete>
+
+    <select id="mutiply" resultType="TCInformation">
+        SELECT a.id,a.classid,a.title,a.message,a.teacherid,a.DATE,b.name
+        FROM class_information a,USER b
+        <where>
+            classid=#{classid} AND a.teacherid=b.id
+           <if test="title!=null and title!=''">
+               and a.title like '%${title}%'
+           </if>
+          <if test="name!=null and name!=''">
+              and b.name like '%${name}%'
+          </if>
+            <if test="date!=null">
+                and a.date &gt;= #{date,jdbcType=DATE}
+            </if>
+
+        </where>
+        order by id desc
+    </select>
+
+    <insert id="add">
+        insert into class_information(classid,message,teacherid,date,title)
+        values(#{classid},#{message},#{teacherid},#{date},#{title})
+    </insert>
+</mapper>

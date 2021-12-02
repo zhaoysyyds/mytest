@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javaee.dao.TeacherClassDao">
+
+    <select id="selectclass_id_name" resultType="ClassName">
+        SELECT b.classname,a.classid
+        FROM teacher_class a ,class b
+        WHERE a.teacherid=#{teacherid} AND a.classid=b.id and a.pass=1
+    </select>
+
+    <select id="selecttcname" resultType="TCName">
+        select classid,teacherid,a.pass,b.name,b.telephone,b.email,b.sex
+        from teacher_class a,user b
+        where classid=#{classid} and a.teacherid=b.id
+    </select>
+    <update id="passteacher">
+        update teacher_class
+        set pass=1
+        where classid=#{classid} and teacher_class.teacherid=#{teacherid}
+    </update>
+
+    <insert id="add_teacher_class">
+        insert into teacher_class(classid,teacherid,pass) values(#{classid},#{teacherid},0)
+    </insert>
+
+    <select id="getjoin0class" resultType="String">
+        SELECT b.classname
+        FROM teacher_class a ,class b
+        WHERE a.classid=b.id AND a.teacherid=#{teacherid} AND a.pass=0 and b.pass=1
+    </select>
+    <select id="check" resultType="Integer">
+        select count(*) from teacher_class where classid=#{classid} and teacherid=#{teacherid}
+    </select>
+
+    <insert id="passhmaster">
+        insert into teacher_class(classid,teacherid,pass) values(#{classid},#{hmasterid},1)
+    </insert>
+</mapper>

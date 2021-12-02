@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javaee.dao.NativeClassDao">
+
+    <select id="getnative" resultType="NativeClass">
+        select a.classid,a.nativeid,a.pass,a.kidname,b.name,b.telephone,b.email,b.sex
+        from native_class a,user b
+        where classid=#{classid} and a.nativeid=b.id
+        order by nativeid
+    </select>
+
+    <update id="passnative">
+        update native_class
+        set pass=1
+        where classid=#{classid} and nativeid=#{nativeid}
+    </update>
+
+    <insert id="add">
+        insert into native_class(classid,nativeid,kidname,pass)
+        values(#{classid},#{nativeid},#{kidname},0)
+    </insert>
+    <select id="check" resultType="Integer">
+        select count(*) from native_class where classid=#{classid} and nativeid=#{nativeid}
+    </select>
+    <select id="getnativeclass" resultType="ClassName">
+        SELECT b.classname,a.classid
+        FROM native_class a,class b
+        WHERE a.`classid`=b.`id` and a.nativeid=#{nativeid} and a.pass=1
+    </select>
+</mapper>

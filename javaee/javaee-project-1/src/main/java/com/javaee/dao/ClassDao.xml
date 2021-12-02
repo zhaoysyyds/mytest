@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javaee.dao.ClassDao">
+
+    <select id="selectClasses" resultType="ClassAName">
+        select a.id,a.classname,a.hmasterid,a.pass,b.name,b.telephone,b.email
+        from class a,user b
+        where a.hmasterid=b.id
+        order by id
+    </select>
+
+    <update id="pass">
+        update class set pass=true where id=#{id}
+    </update>
+    <select id="getclassid" resultType="Integer">
+        select id from class where hmasterid=#{hmasterid} and pass=1
+    </select>
+    <insert id="addclass">
+        insert into class(classname,hmasterid,pass) values(#{classname},#{hmasterid},0)
+    </insert>
+
+    <select id="getaclass" resultType="Class">
+        select * from class where hmasterid=#{teacherid}
+    </select>
+
+    <select id="getallclass" resultType="Class">
+        select * from class where pass=1
+    </select>
+
+    <select id="check" resultType="Integer">
+        select count(*) from class where classname=#{classname}
+    </select>
+
+    <select id="get_nc_name" resultType="String">
+        select classname
+        from class a,native_class b
+        where a.id=b.classid and b.nativeid=#{nativeid} and b.pass=1
+    </select>
+
+    <select id="get_0nc_name" resultType="String">
+        select classname
+        from class a,native_class b
+        where a.id=b.classid and b.nativeid=#{nativeid} and b.pass=0
+    </select>
+</mapper>
